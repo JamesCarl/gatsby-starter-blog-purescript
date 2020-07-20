@@ -11,7 +11,8 @@
 Kick off your project with this blog boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
 
 _Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
-
+## 💻 Demo
+https://gatsby-starter-blog-purescript.netlify.app
 ## 🚀 Quick start
 
 1.  **Create a Gatsby site.**
@@ -20,7 +21,7 @@ _Have another more specific idea? You may want to check out our vibrant collecti
 
     ```shell
     # create a new Gatsby site using the blog starter
-    gatsby new my-blog-starter https://github.com/gatsbyjs/gatsby-starter-blog
+    gatsby new my-purescript-blog-starter https://github.com/jamescarl/gatsby-starter-blog-purescript
     ```
 
 1.  **Start developing.**
@@ -28,7 +29,7 @@ _Have another more specific idea? You may want to check out our vibrant collecti
     Navigate into your new site’s directory and start it up.
 
     ```shell
-    cd my-blog-starter/
+    cd my-purescript-blog-starter/
     gatsby develop
     ```
 
@@ -38,25 +39,31 @@ _Have another more specific idea? You may want to check out our vibrant collecti
 
     _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
 
-    Open the `my-blog-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+    Open the `my-purescript-blog-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
 
 ## 🧐 What's inside?
 
 A quick look at the top-level files and directories you'll see in a Gatsby project.
 
     .
+    ├── content
     ├── node_modules
+    ├── output
+    ├── public
+    ├── scripts
     ├── src
-    ├── .gitignore
-    ├── .prettierrc
+    ├── static
+    ├── test
+    ├── LICENSE
+    ├── README.md
     ├── gatsby-browser.js
     ├── gatsby-config.js
     ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
     ├── package.json
-    └── README.md
+    ├── packages.dhall
+    ├── spago.dhall
+    ├── yarn-error.log
+    └── yarn.lock
 
 1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
 
