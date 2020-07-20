@@ -11,7 +11,7 @@ import Lib.Packages.Gatsby.Link (link)
 import Lib.Utils.Typography (rhythm, scale)
 import React.Basic (JSX)
 import React.Basic.DOM as R
-import Foreign (F, Foreign, readNumber, isNull, unsafeToForeign)
+import Foreign (isNull, unsafeToForeign)
 
 type Props
   = { path :: String
