@@ -12,18 +12,17 @@ import Prelude (div, map, ($), (<>))
 import React.Basic (JSX)
 import React.Basic.DOM as R
 
-type Props a
+type Props
   = { path :: String
-    , location :: Location a
-    , pageResources :: PageResources a
+    , location :: Location
+    , pageResources :: PageResources
     , uri :: String
-    , data :: Data a
-    , pageContext :: Context a
-    , pathContext :: Context a
-    | a
+    , data :: Data
+    , pageContext :: Context
+    , pathContext :: Context
     }
 
-type Location a
+type Location
   = { pathname :: String
     , search :: String
     , hash :: String
@@ -35,82 +34,97 @@ type Location a
     , port :: String
     , state :: String
     , key :: String
-    | a
     }
 
-type Context a
+type Context
   = {
-    | a
     }
 
-type PageResources a
-  = { json :: JSON a
-    , page :: Page a
-    | a
+type PageResources
+  = { json :: JSON
+    , page :: Page
     }
 
-type JSON a
-  = { data :: Data a
-    , pageContext :: Context a
-    | a
+type JSON
+  = { data :: Data
+    , pageContext :: Context
     }
 
-type Data a
-  = { site :: Site a
-    , allMarkdownRemark :: AllMarkdownRemark a
-    | a
+type Data
+  = { site :: Site
+    , allMarkdownRemark :: AllMarkdownRemark
+    , avatar :: Avatar
     }
 
-type AllMarkdownRemark a
-  = { edges :: Array (Edge a)
-    | a
+type Avatar
+  = { childImageSharp :: ChildImageSharp
     }
 
-type Edge a
-  = { node :: Node a
-    | a
+type ChildImageSharp
+  = { fixed :: Fixed
     }
 
-type Node a
+type Fixed
+  = { base64 :: String
+    , width :: Int
+    , height :: Int
+    , src :: String
+    , srcSet :: String
+    }
+
+type AllMarkdownRemark
+  = { edges :: Array (Edge)
+    }
+
+type Edge
+  = { node :: Node
+    }
+
+type Node
   = { excerpt :: String
-    , fields :: Fields a
-    , frontmatter :: Frontmatter a
-    | a
+    , fields :: Fields
+    , frontmatter :: Frontmatter
     }
 
-type Fields a
-  = { slugFields :: String
-    | a
+type Fields
+  = { slug :: String
     }
 
-type Frontmatter a
+type Frontmatter
   = { date :: String
     , title :: String
     , description :: String
-    | a
     }
 
-type Site a
-  = { siteMetadata :: SiteMetadata a
-    | a
+type Site
+  = { siteMetadata :: SiteMetadata
     }
 
-type SiteMetadata a
+type SiteMetadata
   = { title :: String
-    | a
+    , author :: Author
+    , social :: Social
     }
 
-type Page a
+type Author
+  = { name :: String
+    , summary :: String
+    }
+
+type Social
+  = { twitter :: String
+    }
+
+type Page
   = { componentChunkName :: String
     , path :: String
     , webpackCompilationHash :: String
-    | a
     }
 
-index :: forall a. Props a -> JSX
+index :: Props -> JSX
 index props =
   let
-    posts :: forall a. Array (Edge a)
+    posts :: Array Edge
     posts = props.data.allMarkdownRemark.edges
 
     postsComponents :: Array JSX
@@ -164,7 +178,10 @@ index props =
       [ layout
           { children:
               ( [ seo { title: N.notNull "All Posts", meta: N.null, lang: N.null, author: N.null, metaDescription: N.null }
-                , bio {}
+                , bio
+                    { avatar: props.data.avatar
+                    , site: props.data.site
+                    }
                 ]
                   <> postsComponents
               )

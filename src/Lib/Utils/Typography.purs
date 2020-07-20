@@ -1,14 +1,14 @@
-module Lib.Utils.Typography (rhythm, scale) where
+module Lib.Utils.Typography (typography, rhythm, scale) where
 
 import Lib.Packages.Typography.BaseLine (BaseLine)
 import Lib.Packages.Typography.Theme.Wordpress2016 (wordpress2016)
-import Lib.Packages.Typography.Typography (Typography, typography, rhythm_, scale_)
+import Lib.Packages.Typography.Typography as T
 
-typography' :: Typography
-typography' = typography wordpress2016
+typography :: T.Typography
+typography = T.typography wordpress2016
 
 rhythm :: Number -> String
-rhythm = rhythm_ typography'
+rhythm = T.rhythm_ typography
 
 scale :: Number -> BaseLine
-scale = scale_ typography'
+scale = T.scale_ typography

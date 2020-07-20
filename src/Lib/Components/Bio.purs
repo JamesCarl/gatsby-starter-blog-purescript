@@ -1,24 +1,14 @@
-module Lib.Components.Bio (bio) where
+module Lib.Components.Bio where
 
 import Prelude
-import Foreign (Foreign)
-import Lib.Packages.Gatsby (graphql, useStaticQuery)
 import Lib.Packages.Gatsby.Img (img)
 import Lib.Utils.Typography (rhythm)
 import React.Basic (JSX)
 import React.Basic.DOM as R
 
-bioQuery :: String
-bioQuery = "query BioQuery { avatar: file(absolutePath: { regex: \"/profile-pic.jpg/\" }) { childImageSharp { fixed(width: 50, height: 50) { ...GatsbyImageSharpFixed }}} site { siteMetadata {author {name summary} social {twitter}}}}"
-
-foreign import graphqlBioQuery_ :: Unit -> Unit -> BioQuery
-
-graphqlBioQuery :: Unit -> Unit -> BioQuery
-graphqlBioQuery prepare run = graphqlBioQuery_ prepare run
-
-type BioQuery
-  = { avatar :: Avatar
-    , site :: Site
+type Props
+  = { site :: Site
+    , avatar :: Avatar
     }
 
 type Avatar
@@ -42,7 +32,8 @@ type Site
     }
 
 type SiteMetadata
-  = { author :: Author
+  = { title :: String
+    , author :: Author
     , social :: Social
     }
 
@@ -55,44 +46,41 @@ type Social
   = { twitter :: String
     }
 
-bio :: {} -> JSX
-bio _ =
-  let
-    results = graphqlBioQuery unit unit
-  in
-    R.div
-      { style:
-          R.css
-            { display: "flex"
-            , marginBottom: rhythm 2.5
+bio :: Props -> JSX
+bio props =
+  R.div
+    { style:
+        R.css
+          { display: "flex"
+          , marginBottom: rhythm 2.5
+          }
+    , children:
+        [ img
+            { fixed: props.avatar.childImageSharp.fixed
+            , alt: props.site.siteMetadata.author.name
+            , style:
+                R.css
+                  { marginRight: rhythm $ div 1.0 2.0
+                  , marginBottom: 0
+                  , minWidth: 50
+                  , borderRadius: "100%"
+                  }
+            , imgStyle:
+                { borderRadius: "50%"
+                }
             }
-      , children:
-          [ img
-              { fixed: results.avatar.childImageSharp.fixed
-              , alt: results.site.siteMetadata.author.name
-              , style:
-                  R.css
-                    { marginRight: rhythm $ div 1.0 2.0
-                    , marginBottom: 0
-                    , minWidth: 50
-                    , borderRadius: "100%"
-                    }
-              , imgStyle:
-                  { borderRadius: "50%"
-                  }
-              }
-          , R.p_
-              [ R.text "Written by "
-              , R.strong_
-                  [ R.text results.site.siteMetadata.author.name
-                  ]
-              , R.text (" " <> results.site.siteMetadata.author.summary <> " ")
-              , R.a
-                  { href: ("https://twitter.com/" <> results.site.siteMetadata.social.twitter)
-                  , children:
-                      [ R.text "You should follow him on Twitter"
-                      ]
-                  }
-              ]
-          ]
-      }
+        , R.p_
+            [ R.text "Written by "
+            , R.strong_
+                [ R.text props.site.siteMetadata.author.name
+                ]
+            , R.text (" " <> props.site.siteMetadata.author.summary <> " ")
+            , R.a
+                { href: ("https://twitter.com/" <> props.site.siteMetadata.social.twitter)
+                , children:
+                    [ R.text "You should follow him on Twitter"
+                    ]
+                }
+            ]
+        ]
+    }

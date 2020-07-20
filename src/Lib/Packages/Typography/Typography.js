@@ -1,7 +1,8 @@
 "use strict";
-var Typography = require("typography")
+var Typography = require("typography");
 exports.typography_ = function (options) {
-    return new Typography(options)
+    const t = new Typography(options)
+    return t
 }
 exports.createStyles_ = function (t) {
     return t.createStyles()

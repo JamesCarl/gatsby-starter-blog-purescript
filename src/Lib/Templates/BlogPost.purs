@@ -4,7 +4,7 @@ import Prelude
 import Prim
 import Data.Nullable as N
 import Data.String (null)
-import Lib.Components.Bio (bio)
+import Lib.Components.Bio as B
 import Lib.Components.Layout (layout)
 import Lib.Components.Seo (seo)
 import Lib.Packages.Gatsby.Link (link)
@@ -13,18 +13,17 @@ import React.Basic (JSX)
 import React.Basic.DOM as R
 import Foreign (F, Foreign, readNumber, isNull, unsafeToForeign)
 
-type Props a
+type Props
   = { path :: String
-    , location :: Location a
-    , pageResources :: PageResources a
+    , location :: Location
+    , pageResources :: PageResources
     , uri :: String
-    , data :: Data a
-    , pageContext :: Context a
-    , pathContext :: Context a
-    | a
+    , data :: Data
+    , pageContext :: Context
+    , pathContext :: Context
     }
 
-type Location a
+type Location
   = { pathname :: String
     , search :: String
     , hash :: String
@@ -36,101 +35,116 @@ type Location a
     , port :: String
     , state :: String
     , key :: String
-    | a
     }
 
-type PageContext a
+type PageContext
   = { fields ::
         { slug :: String
-        | a
         }
     , frontmatter ::
         { title :: String
-        | a
         }
-    | a
     }
 
-type Context a
-  = { next :: PageContext a
-    , previous :: PageContext a
+type Context
+  = { next :: PageContext
+    , previous :: PageContext
     }
 
-type PageResources a
-  = { json :: JSON a
-    , page :: Page a
-    | a
+type PageResources
+  = { json :: JSON
+    , page :: Page
     }
 
-type JSON a
-  = { data :: Data a
-    , pageContext :: Context a
-    | a
+type JSON
+  = { data :: Data
+    , pageContext :: Context
     }
 
-type Data a
-  = { site :: Site a
-    , allMarkdownRemark :: AllMarkdownRemark a
-    , markdownRemark :: MarkdownRemark a
-    | a
+type Data
+  = { site :: Site
+    , avatar :: Avatar
+    , allMarkdownRemark :: AllMarkdownRemark
+    , markdownRemark :: MarkdownRemark
     }
 
-type MarkdownRemark a
+type Avatar
+  = { childImageSharp :: ChildImageSharp
+    }
+
+type ChildImageSharp
+  = { fixed :: Fixed
+    }
+
+type Fixed
+  = { base64 :: String
+    , width :: Int
+    , height :: Int
+    , src :: String
+    , srcSet :: String
+    }
+
+type MarkdownRemark
   = { html :: String
-    , frontmatter :: Frontmatter a
+    , frontmatter :: Frontmatter
     , excerpt :: String
-    | a
     }
 
-type Frontmatter a
+type Frontmatter
   = { date :: String
     , description :: String
     , title :: String
-    | a
     }
 
-type AllMarkdownRemark a
-  = { edges :: Array (Edge a)
-    | a
+type AllMarkdownRemark
+  = { edges :: Array Edge
     }
 
-type Edge a
-  = { node :: Node a
-    | a
+type Edge
+  = { node :: Node
     }
 
-type Node a
+type Node
   = { excerpt :: String
-    , fields :: Fields a
-    , frontmatter :: Frontmatter a
-    | a
+    , fields :: Fields
+    , frontmatter :: Frontmatter
     }
 
-type Fields a
+type Fields
   = { slugFields :: String
-    | a
     }
 
-type Site a
-  = { siteMetadata :: SiteMetadata a
-    | a
+type Site
+  = { siteMetadata :: SiteMetadata
     }
 
-type SiteMetadata a
+type SiteMetadata
   = { title :: String
-    | a
+    , author :: Author
+    , social :: Social
     }
 
-type Page a
+type Author
+  = { name :: String
+    , summary :: String
+    }
+
+type Social
+  = { twitter :: String
+    }
+
+type Page
   = { componentChunkName :: String
     , path :: String
     , webpackCompilationHash :: String
-    | a
     }
 
-blogPost :: forall a. Props a -> JSX
+blogPost :: Props -> JSX
 blogPost props =
   let
+    bioComponent :: B.Avatar -> B.Site -> JSX
+    bioComponent avatar site = B.bio { avatar: avatar, site: site }
+
     post = props.data.markdownRemark
 
     siteTitle = props.data.site.siteMetadata.title
@@ -187,7 +201,8 @@ blogPost props =
                         { marginBottom: rhythm 1.0
                         }
                   }
-              , R.footer_ [ bio {} ]
+              , R.footer_
+                  [ bioComponent props.data.avatar props.data.site ]
               ]
           , R.nav_
               [ R.ul
@@ -250,3 +265,10 @@ blogPost props =
               ]
           ]
       }
+  where
+  site props =
+    { siteMetaData:
+        { author: props.data.site.siteMetaData.author
+        , social: props.data.site.siteMetaData.social
+        }
+    }
