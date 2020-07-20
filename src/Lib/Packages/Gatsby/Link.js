@@ -1,0 +1,1 @@
+exports.link_ = require('gatsby').Link

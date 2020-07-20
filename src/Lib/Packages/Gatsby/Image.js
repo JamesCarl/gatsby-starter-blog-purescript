@@ -1,0 +1,1 @@
+exports.img_ = require('gatsby-image').default
