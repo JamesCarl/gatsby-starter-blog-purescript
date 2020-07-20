@@ -56,6 +56,7 @@
   },
   "scripts": {
     "preinstall": "./scripts/preinstall.sh",
+    "postinstall": "./scripts/postinstall.sh",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
